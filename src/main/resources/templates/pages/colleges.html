@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>掌上高校</title>
+    <link rel="stylesheet" href="../../static/layer/layui/css/layui.css" th:href="@{/layer/layui/css/layui.css}">
+    <link rel="stylesheet" href="../../static/css/list/iconfont.css" th:href="@{/css/list/iconfont.css}">
+    <link rel="stylesheet" href="../../static/css/colleges.css" th:href="@{/css/colleges.css}">
+    <link rel="stylesheet" href="../../static/layer/mobile/need/layer.css" th:href="@{/layer/mobile/need/layer.css}">
+    <script src="../../static/js/jquery-3.3.1.min.js" th:src="@{/js/jquery-3.3.1.min.js}"></script>
+    <script src="../../static/layer/layui/layui.js" th:src="@{/layer/layui/layui.js}"></script>
+    <script src="../../static/layer/mobile/layer.js" th:src="@{/layer/mobile/layer.js}"></script>
+    <script src="../../static/js/rollups/aes.js" th:src="@{/js/rollups/aes.js}"></script>
+    <script src="../../static/js/index.js" th:src="@{/js/index.js}"></script>
+</head>
+
+<body>
+
+<div class="header">
+    <a href="/school/index" class="back-list"><i class="icon iconfont icon-menu2"></i></a>
+    <span class="tr-list">掌上高考-<span id="title">查国内大学</span></span>
+</div>
+
+<div >
+    <input type="text" class="search" id="search" placeholder="搜索你感兴趣的大学" >
+    <i class="layui-icon layui-icon-search search-i" id="search-btn"></i>
+</div>
+
+
+<div class="icons">
+    <div class="icons-position">
+        <a href="/school/position">
+        <div class="icons-position-all">
+        <i class="layui-icon layui-icon-location" style="font-size: 150px;color: white;margin-top: 5px"></i>
+        </div>
+
+        <div>
+            <p class="icons-position-p">按地域查找</p>
+        </div>
+        </a>
+    </div>
+
+    <div class="icons-position">
+        <a href="#">
+            <div class="icons-position-all">
+                <i class="layui-icon layui-icon-template-1" style="font-size: 150px;color: white;margin-top: 5px"></i>
+            </div>
+
+            <div>
+                <p class="icons-position-p">按专业查找</p>
+            </div>
+        </a>
+
+    </div>
+
+    <div class="icons-position">
+        <a href="#">
+            <div class="icons-position-all">
+                <i class="layui-icon layui-icon-list" style="font-size: 150px;color: white;"></i>
+            </div>
+
+            <div>
+                <p class="icons-position-p">按类别查找</p>
+            </div>
+        </a>
+
+    </div>
+
+    <div class="icons-position">
+        <a href="#">
+            <div class="icons-position-all">
+                <i class="layui-icon layui-icon-help" style="font-size: 150px;color: white;"></i>
+            </div>
+
+            <div>
+                <p class="icons-position-p">大学验证</p>
+            </div>
+        </a>
+
+    </div>
+</div>
+
+
+<div class="college">
+
+     <ul id="ul">
+
+     </ul>
+
+</div>
+
+
+<script>
+
+    colleges = "";
+
+  $("#search-btn").click(function () {
+
+        var  name = $("#search").val();
+
+        if (($.trim(name)) == ""){
+            layer.open({
+                content:"请输入学校名称",
+                time:1,
+            });
+        }
+
+      loadAjax(name);
+  });
+        function loadAjax(name) {
+            $.ajax({
+                type: "get",
+                url: "college/findCollegeByName",
+                dataType: "json",
+                data: {"name": MyEncrypt(name.toString())},
+                success: function (result) {
+                    if (result.resultMap.code == 0) {
+                        var results = MyDecrypt(result.resultMap.data.AesResult);
+                        var data = JSON.parse(results);
+                        colleges = data.data;
+                        console.log(colleges);
+                        colleges = colleges.reverse();
+
+                        layui.use('laytpl', function () {
+                            layTpl = layui.laytpl;
+                            //模板
+                            var html = $("#colleges").html();
+
+                            //数据显示
+                            var ul = $("#ul");
+
+                            layTpl(html).render(colleges, function (vaule) {
+                                ul.html(vaule);
+                            });
+                        });
+
+
+                    }else if (result.resultMap.code == -1) {
+                        layer.open({
+                            content:"服务器异常，请刷新重试",
+                            time:1
+                        });
+                    }else if (result.resultMap.code == 6) {
+                        layer.open({
+                            content:"请求参数异常，请输入重试",
+                            time:1
+                        });
+                    }
+                }
+            })
+        }
+
+
+  function collegeData(a) {
+      var item = $(a).attr("value");
+      var name = $(a).attr("name");
+
+      location.href="collegeData?id="+MyEncrypt(item.toString())+
+          "&name="+MyEncrypt(name.toString());
+  }
+
+
+
+
+
+</script>
+
+
+<script id="colleges"  type="text/html">
+
+    {{#  layui.each(colleges, function(index, item){ }}
+
+    <a value="{{item.id}}" name="{{item.name}}" href="#" onclick="collegeData(this)" >
+
+    <li class="college-introduce">
+        <img class="college-logo" src="http://192.168.2.103/schools/{{item.name}}.jpg">
+        </img>
+
+        <div style="float: left;width: 80%;">
+            <div class="college-name">
+                <span>{{item.name}}</span>
+            </div>
+            <div class="college-type">
+                <span>{{item.level}}</span>
+            </div>
+        </div>
+    </li>
+
+    </a>
+    {{#  }); }}
+
+
+
+</script>
+
+<script>
+
+</script>
+
+</body>
+</html>

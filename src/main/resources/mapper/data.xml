@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.ss.data.dao.DataDao">
+
+    <insert id="addCollege" parameterType="java.util.List">
+        insert into college_info (name, type, district, web, too, nef, nature,parent)
+        values
+        <foreach collection="list" item="College" separator=",">
+            (#{College.name},#{College.type},
+             #{College.district},#{College.web},
+            #{College.too},#{College.nef},
+            #{College.nature},#{College.parent})
+        </foreach>
+    </insert>
+
+    <insert id="addMajor" parameterType="java.util.List">
+        insert into major(name, big, small, info)
+        values
+        <foreach collection="list" item="Major" separator=",">
+            (#{Major.name},#{Major.big},#{Major.small},#{Major.info})
+        </foreach>
+    </insert>
+
+    <select id="getMajors" resultType="com.ss.data.bean.Major">
+        select * from major;
+    </select>
+
+    <insert id="setCollegeMajor">
+        insert into college_major (college_name, major_id)
+        values
+        <foreach collection="list" separator="," item="name">
+            (#{name},#{id})
+        </foreach>
+    </insert>
+
+    <update id="setRank" parameterType="java.util.List">
+        <foreach collection="list" item="Rank" separator=";" open="" close=";">
+            update college_info
+            <set>
+                ranking = #{Rank.category_3}
+            </set>
+            <where>
+                name = #{Rank.uni_name}
+            </where>
+        </foreach>
+    </update>
+
+    <select id="getCollegesId" resultType="java.lang.Integer">
+        select id from college_info
+        where name = #{name}
+    </select>
+
+    <insert id="setScore" parameterType="java.util.List">
+        insert into scores (college_name,year,low,high,avage,sum,batch,type)
+        values
+        <foreach collection="scores" item="Score" separator=",">
+            (#{Score.collegeName},#{Score.year},
+            #{Score.low},#{Score.high},
+            #{Score.avage},#{Score.sum},
+            #{Score.batch},#{Score.type})
+        </foreach>
+    </insert>
+
+    <update id="setIntroduce">
+        update college_info set introduce = #{introduce}
+        where  id = #{id}
+    </update>
+
+    <insert id="setLine" parameterType="java.util.List">
+        insert into province_line (district, year, type, batch, low)
+        values
+        <foreach collection="lines" item="line" separator=",">
+            (#{line.district},#{line.year},
+            #{line.type},#{line.batch},
+            #{line.low})
+        </foreach>
+
+    </insert>
+
+</mapper>

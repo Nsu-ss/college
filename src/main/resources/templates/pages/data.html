@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en"  xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>掌上高校</title>
+    <link rel="stylesheet" href="../../static/layer/layui/css/layui.css" th:href="@{/layer/layui/css/layui.css}">
+    <link rel="stylesheet" href="../../static/css/list/iconfont.css" th:href="@{/css/list/iconfont.css}">
+    <link rel="stylesheet" href="../../static/css/student/iconfont.css"th:href="@{/css/student/iconfont.css}">
+    <link rel="stylesheet" href="../../static/css/data.css" th:href="@{/css/data.css}">
+    <!--<script src="../../static/js/jquery-3.3.1.min.js" th:src="@{/js/jquery-3.3.1.min.js}"></script>-->
+</head>
+<body>
+
+<div class="nav">
+    <a href="/school/index" class="back-list"><i class="icon iconfont icon-menu2"></i></a>
+    <span class="tr-list">掌上高考-<span id="method">根据分数选大学</span></span>
+</div>
+
+<div class="student">
+    <div class="student-data">
+        <div class="student-data-left" align="center">
+            <i class="icon iconfontStudent icon-unie64d"></i>
+        </div>
+        <div class="student-data-right">
+            <li>考试信息：&nbsp;<span th:text="${province}"></span> &nbsp;&nbsp;<span id="type" th:text="${type}"></span></li>
+            <li><span id="methodType">高考分数</span>：&nbsp;&nbsp;<span id="score" th:text="${score}"></span></li>
+            <li>参考：2017年高校调档线</li>
+        </div>
+    </div>
+    <div class="student-btn">
+        <a href="/school/score">重选</a>
+    </div>
+</div>
+
+<div class="student-colleges" align="center">
+    <span>共匹配</span><span id="countSchool">100</span>所学校&nbsp;&nbsp;
+    第<span id="page"></span>/<span id="pages"></span>页&nbsp;&nbsp;参考武书连排名
+</div>
+
+<ul>
+    <li class="school-nav">
+        <div style="margin-left: 140px; float: left ;line-height: 80px">名称</div>
+        <div style="margin-left: 170px; float: left;line-height: 80px">类型</div>
+        <div style="margin-left: 80px; float: left;line-height: 80px">批次</div>
+        <div style="margin-left: 90px; float: left;line-height: 80px">特称</div>
+        <div style="margin-left: 60px; float: left;line-height: 80px">最低分</div>
+    </li>
+
+    <ul id="demo">
+
+    </ul>
+
+</ul>
+
+<div class="BtuPage">
+    <button id="prePage" class="layui-btn layui-btn-normal prePage" >上一页</button>
+    <button id="nextPage" class="layui-btn layui-btn-normal nextPage" style="margin-left: 60px">下一页</button>
+</div>
+
+
+<span id="s_type" th:value="${{type}}" style="display: none"></span>
+<span id="s_score" th:value="${{score}}" style="display: none"></span>
+<span id="province" th:value="${{province}}" style="display: none"></span>
+<span id="year" th:value="${{year}}" style="display: none"></span>
+
+<script src="../../static/js/jquery-3.3.1.min.js" th:src="@{/js/jquery-1.11.3.js}" ></script>
+<script src="../../static/js/index.js" th:src="@{/js/index.js}"></script>
+<script src="../../static/layer/layui/layui.js" th:src="@{/layer/layui/layui.js}"></script>
+<script src="../../static/layer/mobile/layer.js" th:src="@{/layer/mobile/layer.js}"></script>
+
+<script type="text/javascript"  th:inline="none">
+
+    datas = '';
+    page =1;
+    pages=1;
+
+    $(document).ready(function () {
+           type = $("#s_type").attr("value");
+           score = $("#s_score").attr("value");
+           province = $("#province").attr("value");
+           year = $("#year").attr("value");
+        if (type == null || score == null || province== null || year == null){
+            location.href="/school/index";
+        }
+        findSchool(page);
+    });
+
+    function findSchool(page){
+        $.ajax({
+            url:"/school/getCollegeByScore",
+            type :"get",
+            data:{'page':page,'type':type,'province':province,'score':score,'year':year},
+            success:function (result) {
+                if (result.code == 0) {
+                    datas = result.data.data.list;
+                    if (datas.length <=0){
+                        $("#demo").html("暂无数据");
+                        return false;
+                    }
+                    $("#countSchool").text(result.data.data.total);
+                    pages = result.data.data.pages;
+                    $("#page").text(page);
+                    $("#pages").text(result.data.data.pages);
+                    layui.use('laytpl',function () {
+                        layTpl = layui.laytpl;
+
+                        $("#demo").html("");
+                        var html = $("#loadData").html();
+                        layTpl(html).render(datas,function (value) {
+
+                            $("#demo").html(value);
+                        });
+
+                    });
+                }else {
+                    layer.msg("<span style='font-size: 46px; color: red'>系统异常请稍后再试!</span>",{icon: 6});
+                }
+            }
+
+        })
+    }
+
+
+    $("#prePage").click(function () {
+        var  province = $("#province");
+        var  type = $("#type");
+        var prePage = page;
+        var MaxPage = pages;
+        if (prePage > 1){
+            page = prePage -1;
+            findSchool(page);
+        }
+    });
+
+
+    $("#nextPage").click(function () {
+        var  province = $("#province");
+        var  type = $("#type");
+        var prePage = page;
+        var MaxPage = pages;
+        prePage = parseInt(prePage);
+        MaxPage = parseInt(MaxPage);
+
+        if (prePage < MaxPage){
+            page = parseInt(prePage) +1 ;
+            findSchool(page);
+        }
+
+    });
+
+
+
+
+</script>
+
+<script id="loadData"  type="text/html">
+    {{#  layui.each(datas, function(index, item){ }}
+    <li class="school_li">
+        <a href="/school/collegeInfo?id={{item.college.id}}">
+        <div class="li_h li_1">{{item.college.name}}</div>
+        <div class="li_h li_2">{{item.college.type}}</div>
+        <div class="li_h li_3">{{item.batch}}</div>
+        {{#  if(item.college.nef == 985 || item.college.too== 211){ }}
+        <div class="li_h li_4">{{item.college.nef}}&nbsp;{{item.college.too}}</div>
+        {{#  } }}
+        {{#  if(item.college.nef == '' && item.college.too== ''){ }}
+        <div class="li_h li_4">普通</div>
+        {{#  } }}
+        <div class="li_h li_5">{{item.low}}</div>
+        </a>
+    </li>
+    {{#  }); }}
+</script>
+
+
+
+
+
+</body>
+</html>

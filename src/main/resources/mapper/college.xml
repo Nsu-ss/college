@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.ss.data.dao.SchoolDao">
+    
+    <resultMap id="college" type="com.ss.data.bean.College">
+        <result property="type" column="type"/>
+        <result property="district" column="district"/>
+        <result property="web" column="web"/>
+        <result property="ranking" column="ranking"/>
+        <result property="too" column="too"/>
+        <result property="nef" column="nef"/>
+        <result property="nature" column="nature"/>
+        <result property="parent" column="parent"/>
+        <result property="introduce" column="introduce"/>
+        <association property="score" javaType="com.ss.data.bean.Score">
+            <result property="collegeName" column="collegeName"/>
+            <result property="high" column="high"/>
+            <result property="low" column="low"/>
+            <result property="avage" column="avage"/>
+            <result property="sum" column="sum"/>
+            <result property="batch" column="batch"/>
+            <result property="year" column="year"/>
+        </association>
+
+    </resultMap>
+
+    <resultMap id="score" type="com.ss.data.bean.Score">
+        <id property="id" column="id"/>
+        <result property="collegeName" column="collegeName"/>
+        <result property="high" column="high"/>
+        <result property="low" column="low"/>
+        <result property="avage" column="avage"/>
+        <result property="sum" column="sum"/>
+        <result property="batch" column="batch"/>
+        <result property="year" column="year"/>
+        <result property="college.web" column="web"/>
+        <result property="college.name" column="name"/>
+        <result property="college.type" column="type"/>
+        <result property="college.district" column="district"/>
+        <result property="college.ranking" column="ranking"/>
+        <result property="college.too" column="too"/>
+        <result property="college.nef" column="nef"/>
+        <result property="college.nature" column="nature"/>
+        <result property="college.parent" column="parent"/>
+        <result property="college.id" column="id"/>
+        <result property="college.introduce" column="introduce"/>
+    </resultMap>
+
+
+
+    <select id="getByScore" resultMap="score">
+        select scores.id as Sid,scores.college_name,scores.high,scores.low,scores.avage,scores.sum,scores.batch,scores.year,college_info.* from scores,college_info
+        where scores.low >= #{score} and scores.type = #{type}
+        and  scores.year = #{year} and  college_info.district = #{province}
+        and scores.college_name = college_info.name order by college_info.ranking
+    </select>
+
+    <select id="getCollegeById" parameterType="java.lang.Integer" resultType="com.ss.data.bean.College">
+        select * from college_info where id = #{id}
+    </select>
+
+    <select id="getMajor" parameterType="java.lang.String" resultType="com.ss.data.bean.Major">
+        select * from major where id in (
+        select major_id from  college_major where college_name = #{name}
+        )
+    </select>
+
+
+    <select id="getByPosition" resultType="com.ss.data.bean.College">
+       select * from college_info where nature = #{type} and district = #{province} order by ranking
+    </select>
+
+    <select id="getLines" resultType="com.ss.data.bean.Line">
+        select * from province_line where district = #{province} and year=#{year}
+    </select>
+
+    <select id="getLine" parameterType="java.lang.Integer" resultType="com.ss.data.bean.Line">
+        select * from province_line where id = #{id}
+    </select>
+
+
+    <delete id="delete" parameterType="com.ss.data.bean.Line">
+        delete from province_line where district = #{line.district}
+            and type = #{line.type}
+            and year = #{line.year}
+            and batch = #{line.batch}
+            and low = #{line.low}
+            and id != #{line.id}
+    </delete>
+
+
+</mapper>

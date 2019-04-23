@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>掌上高校</title>
+    <link rel="stylesheet" href="../../static/layer/layui/css/layui.css" th:href="@{/layer/layui/css/layui.css}">
+    <link rel="stylesheet" href="../../static/css/list/iconfont.css" th:href="@{/css/list/iconfont.css}">
+    <link rel="stylesheet" href="../../static/css/check.css" th:href="@{/css/check.css}">
+</head>
+<body>
+<div class="nav">
+   <a href="/school/index" class="back-list"><i class="icon iconfont icon-menu2"></i></a>
+    <span class="tr-list">掌上高校-<span id="title">根据分数选大学</span></span>
+</div>
+
+<div class="layui-carousel banner" id="picture">
+    <div carousel-item>
+        <div><img src="../../static/images/53.jpg" th:src="@{/images/53.jpg}" class="banner-img"></div>
+        <div><img src="../../static/images/57.jpg" th:src="@{/images/57.jpg}" class="banner-img"></div>
+        <div><img src="../../static/images/ezb.jpg" th:src="@{/images/ezb.jpg}" class="banner-img"></div>
+    </div>
+</div>
+
+<div style="width: 100%;height: 170px ; border: 1px solid white ; clear: left;margin-top: 380px">
+    <span class="collages" style="margin-left: 60px;border:none">查询方式:</span>
+    <div class="collages" >
+        <a href="#"  class="checks checks-a1" id="checks-1" >根据分数选大学</a>
+    </div>
+</div>
+
+<div style="width: 100%;height: 170px ; border: 1px solid white ; clear: left;">
+    <span style="font-size:46px;margin-left: 60px;">选择年份:</span>
+    <select id="year" name="year" class="selects" >
+        <option>2014</option>
+        <option selected>2015</option>
+        <option>2016</option>
+        <option>2017</option>
+        <option>2018</option>
+    </select>
+</div>
+
+
+<div  style="width: 100%;height: 100px ;border: 1px solid white ; margin-top: 20px">
+   <span style="font-size:46px;margin-left: 60px;">学校省份:</span>
+    <select id="province" name="province" class="selects" >
+        <option value="北京"  key="1" >北京</option>
+        <option value="天津" key="2" >天津</option>
+        <option value="河北"  key="3">河北</option>
+        <option value="山西" key="4">山西</option>
+        <option value="内蒙古" key="5" >内蒙古</option>
+        <option value="辽宁" key="6">辽宁</option>
+        <option value="吉林"  key="7">吉林</option>
+        <option value="黑龙江" key="8" >黑龙江</option>
+        <option value="上海" key="9" >上海</option>
+        <option value="江苏" key="10" >江苏</option>
+        <option value="浙江" key="11" >浙江</option>
+        <option value="安徽" key="12" >安徽</option>
+        <option value="福建" key="13">福建</option>
+        <option value="江西" key="14" >江西</option>
+        <option value="山东" key="15">山东</option>
+        <option value="河南" key="16" >河南</option>
+        <option value="湖北"  key="17">湖北</option>
+        <option value="湖南"  key="18">湖南</option>
+        <option value="广东" key="19" >广东</option>
+        <option value="广西"  key="20">广西</option>
+        <option value="海南"  key="21">海南</option>
+        <option value="重庆"  key="22">重庆</option>
+        <option value="四川" key="23" selected>四川</option>
+        <option value="贵州" key="24" >贵州</option>
+        <option value="云南" key="25" >云南</option>
+        <option value="西藏" key="26" >西藏</option>
+        <option value="陕西" key="27" >陕西</option>
+        <option value="甘肃"  key="28">甘肃</option>
+        <option value="青海" key="29" >青海</option>
+        <option value="宁夏" key="30">宁夏</option>
+        <option value="新疆" key="31">新疆</option>
+        <option value="西藏" key="32">西藏</option>
+    </select>
+</div>
+
+<div style="width: 100%;height: 100px ;border: 1px solid white ; margin-top: 50px">
+   <span style="font-size:46px;margin-left: 150px;float: left;margin-top: 25px">科类:</span>
+    <div class="collage-type" ><a href="#" id="collage-a" class="collage-a collage-change" onclick="typeCheckClick(3)">理科</a></div>
+    <div class="collage-type" ><a href="#" id="collage-b" class="collage-a" onclick="typeCheckClick(4)">文科</a></div>
+</div>
+
+<div style="width: 100%;height: 100px ;border: 1px solid white ; margin-top: 50px">
+    <span class="scoreSpan">高考分数:</span>
+    <input id="scores"  type="text" class="score" onchange="getScore(this)">
+</div>
+
+
+<div style="width: 100%;height: 100px ;border: 1px solid white ; margin-top: 50px">
+  <button class="collage-find" id="collage-find">找大学</button>
+</div>
+
+
+
+<script src="../../static/js/jquery-3.3.1.min.js" th:src="@{/js/jquery-3.3.1.min.js}"></script>
+<script src="../../static/js/index.js" th:src="@{/js/index.js}"></script>
+<script src="../../static/js/rollups/aes.js" th:src="@{/js/rollups/aes.js}"></script>
+<script src="../../static/layer/layui/layui.js" th:src="@{/layer/layui/layui.js}"></script>
+
+
+<script>
+
+    layui.use('carousel', function(){
+        var carousel = layui.carousel;
+        //建造实例
+        carousel.render({
+            elem: '#picture'
+            ,width: '100%'
+            ,height:'350px'//设置容器宽度
+            ,arrow: 'always' //始终显示箭头
+            ,anim: 'default' //切换动画方式
+        });
+
+    });
+
+    var type  = "理科";
+
+    function typeCheckClick(a) {
+        if (a == 3) {
+            var collage_a = $("#collage-a");
+            collage_a.addClass("collage-change");
+            var collage_b = $("#collage-b");
+            collage_b.removeClass("collage-change");
+            type = "理科";
+        } else if (a == 4) {
+            var collage_a = $("#collage-a");
+            collage_a.removeClass("collage-change");
+            var collage_b = $("#collage-b");
+            collage_b.addClass("collage-change");
+            type = "文科";
+        }
+    }
+
+    layui.use('layer', function(){
+        var layer = layui.layer;
+    });
+
+    function getScore(a) {
+        var score = $(a).val();
+        if (score > 750 || score < 0){
+            layer.msg("<span style='font-size: 46px; color: red'>分数不合法!</span>",{icon: 6});
+        }
+    }
+
+    $("#collage-find").on('click',function () {
+
+        var  province = $("#province").val();
+        var  score = $("#scores").val();
+        var year = $("#year").val();
+        if (province != null && score !=null){
+            location.href="/school/data?province="+province+"&score="+score+"&type="+type+"&year="+year;
+        }
+
+    });
+
+
+
+
+    
+</script>
+
+
+</body>
+</html>

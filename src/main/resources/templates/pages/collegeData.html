@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>掌上高校</title>
+    <link rel="stylesheet" href="../../static/layer/layui/css/layui.css" th:href="@{/layer/layui/css/layui.css}">
+    <link rel="stylesheet" href="../../static/css/list/iconfont.css" th:href="@{/css/list/iconfont.css}">
+    <link rel="stylesheet" href="../../static/css/collegeData.css" th:href="@{/css/collegeData.css}">
+</head>
+
+<body>
+
+<div class="header">
+    <a href="/school/index" class="back-list"><i class="icon iconfont icon-menu2"></i></a>
+    <span class="tr-list">掌上高考-<span id="title">学校概况</span></span>
+</div>
+
+<div>
+
+    <div class="content-data">
+        <i class="layui-icon layui-icon-rate-solid btn-icon"></i>
+
+        <span>学校基本信息</span>
+    </div>
+
+
+    <div class="content" id="school">
+    </div>
+
+
+    <div class="content-data">
+        <i class="layui-icon layui-icon-rate-solid btn-icon"></i>
+
+        <span id="course">学校专业信息</span>
+    </div>
+
+    <div id="schoolCourse" style="overflow: auto;height: 1000px;width: 90%;margin-left: 5%;">
+    </div>
+
+
+    <div id="courseContent" class="courseContent" >
+
+    </div>
+
+
+
+
+
+</div>
+
+<span id="college" th:value="${college}" style="display: none"></span>
+
+
+<script src="../../static/js/index.js" th:src="@{/js/index.js}"></script>
+<script src="../../static/js/jquery-3.3.1.min.js" th:src="@{/js/jquery-3.3.1.min.js}"></script>
+<script src="../../static/layer/layui/layui.js" th:src="@{/layer/layui/layui.js}"></script>
+<script src="../../static/layer/mobile/layer.js" th:src="@{/layer/mobile/layer.js}"></script>
+<script>
+
+    info = [];
+    courses="";
+
+    $(document).ready(function () {
+        var college = JSON.parse($("#college").attr("value"));
+        if (college !=null){
+
+            $("#introduce").html(college.introduce);
+            SchoolAjax(college);
+            schoolCourseAjax(college.name);
+        }
+
+
+    });
+
+    function SchoolAjax(college) {
+        info[0] = college;
+        layui.use('laytpl', function() {
+            layTpl = layui.laytpl;
+            //模板
+            var  html = $("#schoolData").html();
+
+            //数据显示
+            var  school = $("#school");
+
+            layTpl(html).render(info,function (vaule) {
+                school.html(vaule);
+            });
+        });
+    }
+
+
+    function schoolCourseAjax(name) {
+        $.ajax({
+            type: "get",
+            url: "/school/major",
+            dataType: "json",
+            data: {"name": name },
+            success:function (result) {
+                if (result.code == 0) {
+                    courses = result.data.major;
+                    if (courses.length==0){
+                        $("#schoolCourse").text("信息暂无");
+                        return;
+                    }
+                    layui.use('laytpl', function () {
+                        layTpl = layui.laytpl;
+                        //模板
+                        var html = $("#school_course").html();
+
+                        //数据显示
+                        var schoolCourse = $("#schoolCourse");
+
+                        layTpl(html).render(courses, function (vaule) {
+
+                            schoolCourse.html(vaule);
+                        });
+                    });
+                }
+            }
+        })
+    }
+
+    function load(a) {
+        var  href = $(a).attr("value");
+        if (href != '——'){
+            if (href.indexOf(':') == -1){
+                window.location.href="http://"+href;
+            }else {
+                window.location.href=href;
+            }
+        }
+    }
+
+
+
+</script>
+<script id="schoolData"  type="text/html">
+
+    {{#  layui.each(info, function(index, item){ }}
+
+    <div class="content-detail-a">
+        <span>名称：{{item.name}}</span>
+        <span>单位：{{item.parent}}</span>
+        <span>网址：<a onclick="load(this)" value="{{item.web}}">{{item.web}}</a></span>
+    </div>
+
+    <div class="content-detail-b">
+        <span >地区：{{item.district}}</span>
+        <span >层次：{{item.type}}</span>
+        <span >类型：{{item.nature}}</span>
+    </div>
+
+    {{#  }); }}
+
+
+
+</script>
+
+
+<script id="school_course"  type="text/html">
+
+    {{#  layui.each(courses, function(index, item){ }}
+
+
+    <li class="college-course-li">
+        <div class="college-course" title="专业大类：{{item.big}} ">{{item.name}}</div>
+    </li>
+
+    {{#  }); }}
+
+
+
+</script>
+
+<script>
+
+</script>
+
+
+</body>
+</html>

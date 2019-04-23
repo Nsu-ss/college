@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en"  xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>掌上高校</title>
+    <link rel="stylesheet" href="../../static/layer/layui/css/layui.css" th:href="@{/layer/layui/css/layui.css}">
+    <link rel="stylesheet" href="../../static/css/list/iconfont.css" th:href="@{/css/list/iconfont.css}">
+    <link rel="stylesheet" href="../../static/css/student/iconfont.css"th:href="@{/css/student/iconfont.css}">
+    <link rel="stylesheet" href="../../static/css/data.css" th:href="@{/css/data.css}">
+    <script src="../../static/js/jquery-3.3.1.min.js" th:src="@{/js/jquery-1.11.3.js}" ></script>
+    <script src="../../static/js/index.js" th:src="@{/js/index.js}"></script>
+    <script src="../../static/js/rollups/aes.js" th:src="@{/js/rollups/aes.js}"></script>
+    <script src="../../static/layer/layui/layui.js" th:src="@{/layer/layui/layui.js}"></script>
+    <script src="../../static/layer/mobile/layer.js" th:src="@{/layer/mobile/layer.js}"></script>
+
+    <!--<script src="../../static/js/jquery-3.3.1.min.js" th:src="@{/js/jquery-3.3.1.min.js}"></script>-->
+</head>
+<body>
+
+<div class="nav">
+    <a href="/" class="back-list"><i class="icon iconfont icon-menu2"></i></a>
+    <span class="tr-list">掌上高考-<span id="method">根据分数选大学</span></span>
+</div>
+
+<div class="student">
+    <div class="student-data">
+        <div class="student-data-left" align="center">
+            <i class="icon iconfontStudent icon-unie64d"></i>
+        </div>
+        <div class="student-data-right">
+            <li>考试信息：&nbsp;四川 &nbsp;&nbsp;<span id="type">理科</span></li>
+            <li><span id="methodType">高考分数</span>：&nbsp;&nbsp;<span id="score">550</span></li>
+            <li>参考分数：历年调档线</li>
+        </div>
+    </div>
+    <div class="student-btn">
+        <a href="findCollege">重选</a>
+    </div>
+</div>
+
+<div class="student-colleges" align="center">
+    <span>共匹配</span><span id="countSchool">100</span>所学校&nbsp;&nbsp;
+    第<span id="page"></span>/<span id="pages"></span>页&nbsp;&nbsp;参考武书连排名
+</div>
+
+<ul id="ul">
+    <li class="school-nav">
+        <div style="margin-left: 60px">学校</div>
+        <div class="school-nav-se">
+            <select class="select-a" id="select-cli">
+                <option value="0" selected>所有批次</option>
+                <option value="1">本科提前批</option>
+                <option value="2">本科一批</option>
+                <option value="3">本科二批</option>
+                <option value="4">本科三批</option>
+                <option value="5">	专科一批</option>
+            </select>
+        </div>
+        <div>2017年分数线</div>
+        <div>概率</div>
+    </li>
+
+    <ul id="uls">
+
+    </ul>
+</ul>
+
+
+<span id="data" th:value="${{data}}" style="display: none"></span>
+
+<div class="BtuPage">
+    <button id="prePage" class="layui-btn layui-btn-normal prePage" >上一页</button>
+    <button id="nextPage" class="layui-btn layui-btn-normal nextPage" style="margin-left: 60px">下一页</button>
+</div>
+
+
+
+
+
+
+<script>
+
+    $(document).ready(function () {
+        var  data = $("#data").attr("value");
+        console.log(data);
+    });
+
+    $.ajax({
+        type:"get",
+        url:"college"+url,
+        data: {"courseType":courseType,
+                "space":space,
+                "scoreOrPosition":scoreOrPosition,
+                "page":MyEncrypt(page.toString()),
+                "flag":MyEncrypt(flag.toString()),
+                "level":MyEncrypt(level.toString())},
+        dataType:"json",
+        success:function (result) {
+
+            if (result.resultMap.code == 0) {
+                var results = MyDecrypt(result.resultMap.data.AesResult);
+                var data = JSON.parse(results);
+                info = data.data;
+                console.log(info);
+
+            }
+        }
+    });
+
+
+
+</script>
+
+<script id="loadData"  type="text/html">
+
+
+    {{#  layui.each(info, function(index, item){ }}
+
+    <li class="school-data">
+        <a value="{{item.school.id}}" name="{{item.school.name}}" href="#" onclick="collegeData(this)">
+        <div class="school-img">
+            <img src="http://192.168.2.103/schools/{{item.school.name}}.jpg" class="school-img-logo">
+        </div>
+        </a>
+        <div class="school-name" >
+            <a style="color: black;text-decoration: none;" value="{{item.school.id}}" name="{{item.school.name}}"  href="#" onclick="collegeData(this)">
+            <span class="schoolName">{{item.school.name}}</span>
+            </a>
+            <span style="overflow:hidden;text-overflow: ellipsis;white-space: nowrap;">{{item.school.location}}</span>
+            <a href="#" name="{{item.school.url}}" onclick="UrlClick(this,1)">学校主页</a>
+        </div>
+        <div class="school-type">
+            <span class="school-type-span">{{item.level}}</span>
+            <div>
+                <a href="#" class="school-cla"><span>专业</span></a>
+            </div>
+        </div>
+
+        <div class="school-score">
+            <p align="center"><span>平均分</span><span>最低分</span></p>
+            <p align="center"><span>{{item.average}}</span><span>{{item.base}}</span></p>
+        </div>
+
+        <div class="school-pra">
+            <span class="schoolDangerA" >{{item.other}}</span>
+        </div>
+
+        <div class="school-web">
+            <span><a href="#" name="{{item.school.gotoUrl}}" onclick="UrlClick(this,2)">招生网站</a></span>
+        </div>
+    </li>
+    
+    {{#  }); }}
+
+
+
+</script>
+
+
+
+
+
+</body>
+</html>

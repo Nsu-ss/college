@@ -1,0 +1,124 @@
+*{
+    padding: 0px;
+    margin: 0px;
+    font-size: 46px;
+}
+
+.banner{
+    position: absolute;
+    top: 122px;
+}
+
+.banner-img{
+    width:100%;
+    height: 100%;
+    display: block;
+}
+
+.nav{
+    height: 120px;
+    width: 100%;
+    border: 1px solid white;
+    background-color: #57a3ef;
+    color: white;
+}
+
+
+.back-list {
+    text-decoration: none;
+    float: left;
+    height: 140px;
+}
+.tr-list{
+    display: block;
+    margin-left: 300px;
+    font-size: 46px;
+    line-height: 120px;
+}
+
+.checks{
+    width: 370px;
+    height: 120px;
+    border-radius: 10px;
+    display: block;
+    font-size: 46px;
+    text-decoration: none;
+    color: #666666;
+    text-align: center;
+}
+
+.checks-a1{
+    color: white;
+    background-color: #57a3ef;
+}
+
+.collages{
+    width: 350px;
+    height: 120px;
+    border-radius: 10px;
+    border: 1px solid #e7e1cd;
+    line-height: 120px;
+    float: left;
+}
+.selects{
+    font-size: 46px;
+    width: 600px;
+    text-align: right;
+    height: 110px;
+    margin-left: 15px;
+    padding-left: 30px;
+}
+
+.selects option{
+    font-size: 20px;
+}
+
+.collage-type{
+    height: 90px;
+    width: 286px;
+    border: 1px solid rosybrown;
+    float: left;
+    margin-left: 32px;
+}
+.collage-a{
+    line-height: 90px;
+    height: 90px;
+    width: 286px;
+    text-decoration: none;
+    display: block;
+    text-align: center;
+    color: black;
+}
+.collage-change{
+    background-color: #57a3ef;
+    color: white;
+}
+
+.score{
+    border: 1px solid #999999;
+    height: 90px;
+    margin-left: 32px;
+    width: 600px;
+    font-size: 46px;
+}
+
+.collage-find{
+    font-size: 46px;
+    border-radius: 20px;
+    text-decoration: none;
+    color: white;
+    background-color: #57a3ef;
+    width: 550px;
+    height: 120px;
+    margin-left: 200px;
+    cursor:pointer;
+    border: none;
+}
+
+
+.scoreSpan{
+font-size:46px;
+    margin-left: 60px;
+    float: left;
+    margin-top: 15px;
+}

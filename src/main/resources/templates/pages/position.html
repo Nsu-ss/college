@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>掌上高校</title>
+
+    <link rel="stylesheet" href="../../static/layer/layui/css/layui.css" th:href="@{/layer/layui/css/layui.css}">
+    <link rel="stylesheet" href="../../static/css/list/iconfont.css" th:href="@{/css/list/iconfont.css}">
+    <link rel="stylesheet" href="../../static/css/collegesByp.css" th:href="@{/css/collegesByp.css}">
+    <script src="../../static/js/index.js" th:src="@{/js/index.js}"></script>
+    <script src="../../static/js/rollups/aes.js" th:src="@{/js/rollups/aes.js}"></script>
+    <script src="../../static/js/jquery-3.3.1.min.js" th:src="@{/js/jquery-3.3.1.min.js}"></script>
+    <script src="../../static/layer/layui/layui.js" th:src="@{/layer/layui/layui.js}"></script>
+    <script src="../../static/layer/mobile/layer.js" th:src="@{/layer/mobile/layer.js}"></script>
+</head>
+
+
+<body>
+
+<div class="header">
+    <a href="/school/index" class="back-list"><i class="icon iconfont icon-menu2"></i></a>
+    <span class="tr-list">掌上高考-根据地域查大学</span>
+</div>
+
+<div>
+    <div class="content-header">
+        <span style="margin: 15px 0 0 40px;">省份</span>
+        <select id="province" class="shengFen">
+            <option  value="北京">北京</option>
+            <option  value="天津">天津</option>
+            <option  value="河北">河北</option>
+            <option  value="山西">山西</option>
+            <option  value="内蒙古">内蒙古</option>
+            <option  value="辽宁">辽宁</option>
+            <option  value="吉林">吉林</option>
+            <option  value="黑龙江">黑龙江</option>
+            <option  value="上海">上海</option>
+            <option  value="江苏">江苏</option>
+            <option  value="浙江">浙江</option>
+            <option  value="安徽">安徽</option>
+            <option  value="福建">福建</option>
+            <option  value="江西">江西</option>
+            <option  value="山东">山东</option>
+            <option  value="河南">河南</option>
+            <option  value="湖北">湖北</option>
+            <option  value="湖南">湖南</option>
+            <option  value="广东">广东</option>
+            <option  value="广西">广西</option>
+            <option  value="海南">海南</option>
+            <option  value="重庆">重庆</option>
+            <option  value="四川" selected>四川</option>
+            <option  value="贵州">贵州</option>
+            <option  value="云南">云南</option>
+            <option  value="西藏">西藏</option>
+            <option  value="陕西">陕西</option>
+            <option  value="甘肃">甘肃</option>
+            <option  value="青海">青海</option>
+            <option  value="宁夏">宁夏</option>
+            <option  value="新疆">新疆</option>
+            <option  value="香港">香港</option>
+            <option  value="澳门">澳门</option>
+            <option  value="台湾">台湾</option>
+        </select>
+    </div>
+
+    <div class="content-header">
+        <span style="margin: 15px;">层次</span>
+        <select id="type"  class="keLei">
+            <option selected value="本科">本科</option>
+            <option  value="专科">专科</option>
+        </select>
+
+    </div>
+
+</div>
+    <div class="content">
+        <li class="content-span">
+            <div style="float: left;margin-left: 5px;">
+                <span style="line-height: 50px">院校信息</span>
+            </div>
+
+            <div style="float: right;margin-right: 40px;">
+                <span style="line-height: 50px">共匹配</span><span style="line-height: 50px" id="countSchool"></span>
+                <span style="line-height: 50px">所学校</span>
+                <span style="line-height: 50px">第</span><span id="cpage" style="line-height: 50px"></span>/
+                <span id="cpages" style="line-height: 50px"></span><span>页</span>
+            </div>
+        </li>
+    </div>
+    <ul >
+        <li class="school-nav">
+            <div style="margin-left: 140px; float: left ;line-height: 80px">名称</div>
+            <div style="margin-left: 170px; float: left;line-height: 80px">类型</div>
+            <div style="margin-left: 80px; float: left;line-height: 80px">排名</div>
+            <div style="margin-left: 90px; float: left;line-height: 80px">特称</div>
+            <div style="margin-left: 60px; float: left;line-height: 80px">机构</div>
+        </li>
+        <ul id="ul">
+
+        </ul>
+
+    </ul>
+
+
+<div class="BtuPage">
+    <button id="prePage" class="layui-btn layui-btn-normal prePage" >上一页</button>
+    <button id="nextPage" class="layui-btn layui-btn-normal nextPage" style="margin-left: 60px">下一页</button>
+</div>
+
+
+
+
+<script>
+
+    colleges = "";
+    page= 1;
+
+    $(document).ready(function () {
+
+        var  province = $("#province");
+        var  type = $("#type");
+
+        findSchool(province.val(),type.val());
+    });
+
+
+    $("#province").change(function () {
+        var  province = $("#province");
+        var  type = $("#type");
+
+        findSchool(province.val(),type.val());
+        page = 1;
+    });
+
+
+
+    $("#type").change(function () {
+        page = 1;
+        var  province = $("#province");
+        var  type = $("#type");
+
+        findSchool(province.val(),type.val());
+    });
+
+
+
+    function findSchool(province,type) {
+        $.ajax({
+            type: "get",
+            url: "/school/getCollegeByPosition",
+            dataType: "json",
+            data: {"province":province,
+                    "level":type,
+                    "page":page},
+            success:function (result) {
+                console.log(result.data);
+                if (result.code === 0) {
+                    colleges = result.data.colleges.list;
+                    if (colleges.length > 0){
+                        $("#ul").html("");
+                    } else {
+                        $("#ul").html("信息暂无");
+                        return ;
+                    }
+
+                    var countSchool = $("#countSchool");
+                    countSchool.text(result.data.colleges.total);
+                    var cpage = $("#cpage");
+                    var cpages = $("#cpages");
+                    pages = result.data.colleges.pages;
+                    cpage.text(page);
+                    cpages.text(result.data.colleges.pages);
+
+
+                    layui.use('laytpl', function () {
+                        layTpl = layui.laytpl;
+                        //模板
+                        var html = $("#colleges").html();
+
+                        //数据显示
+                        var ul = $("#ul");
+                        layTpl(html).render(colleges, function (vaule) {
+                            ul.html(ul.html()+vaule);
+                        });
+                    });
+                }
+            }
+        })
+    }
+
+
+    $("#prePage").click(function () {
+        var  province = $("#province");
+        var  type = $("#type");
+        var prePage = page;
+        var MaxPage = pages;
+        if (prePage > 1){
+            page = prePage -1;
+            findSchool(province.val(),type.val());
+        }
+    });
+
+
+    $("#nextPage").click(function () {
+        var  province = $("#province");
+        var  type = $("#type");
+        var prePage = page;
+        var MaxPage = pages;
+        prePage = parseInt(prePage);
+        MaxPage = parseInt(MaxPage);
+
+        if (prePage < MaxPage){
+            page = parseInt(prePage) +1 ;
+        }
+        findSchool(province.val(),type.val());
+    });
+
+
+
+
+
+</script>
+
+
+<script id="colleges"  type="text/html">
+
+    {{#  layui.each(colleges, function(index, item){ }}
+
+    <li class="school_li">
+        <a href="/school/collegeInfo?id={{item.id}}">
+            <div class="li_h li_1">{{item.name}}</div>
+            <div class="li_h li_2">{{item.type}}</div>
+            {{#  if(item.ranking == 3000){ }}
+            <div class="li_h li_3">无</div>
+            {{#  } }}
+            {{#  if(item.ranking != 3000){ }}
+            <div class="li_h li_3">{{item.ranking}}</div>
+            {{#  } }}
+            {{#  if(item.nef == 985 || item.too== 211){ }}
+            <div class="li_h li_4">{{item.nef}}&nbsp;{{item.too}}</div>
+            {{#  } }}
+            {{#  if(item.nef == '' && item.too== ''){ }}
+            <div class="li_h li_4">普通</div>
+            {{#  } }}
+            <div class="li_h li_5">{{item.parent}}</div>
+        </a>
+    </li>
+    {{#  }); }}
+
+
+</script>
+
+
+</body>
+</html>

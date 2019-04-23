@@ -1,0 +1,172 @@
+*{
+    padding: 0px;
+    margin: 0px;
+    font-size: 36px;
+}
+.header{
+    height: 120px;
+    width: 100%;
+    border: 1px solid white;
+    background-color: #57a3ef;
+    color: white;
+}
+.tr-list {
+    display: block;
+    margin-left: 300px;
+    line-height: 120px;
+    font-size: 46px;
+}
+
+.shengFen{
+    width: 280px;
+    height: 80px;
+    font-size: 38px;
+    margin-left:10px;
+}
+
+.shengFen option{
+    font-size: 20px;
+}
+
+.keLei{
+    width: 250px;
+    height: 80px;
+    font-size: 38px;
+    margin-right: 20px;
+}
+
+.keLei option{
+    font-size: 20px;
+}
+
+.content-header{
+    margin-top: 35px;
+    float: left;
+    margin-left: 30px;
+}
+
+.content{
+    margin-top: 160px;
+    border: 1px solid white;
+}
+
+.content-span{
+    width:95%;
+    height: 80px;
+    margin-left: 30px;
+    margin-top: 5px;
+    background-color:#1E9FFF;
+    border-radius: 25px;
+}
+.content-span span{
+    color: white;
+    font-size: 40px;
+}
+
+.logo-div{
+    float: left;
+    border: 1px solid white;
+    height: 155px;
+    width: 140px;
+}
+
+.logo{
+    height: 145px;
+    width: 130px;
+    text-align: center;
+}
+
+.school{
+    float: left;
+    border: 1px solid white;
+    height: 155px;
+    width: 80%;
+    margin-left: 30px;
+}
+
+.school span{
+    display: block;
+    border: 1px solid white;
+    height: 65px;
+    font-size: 38px;
+    margin-top: 10px;
+}
+
+.BtuPage{
+    height: 102px;
+    width: 450px;
+    border: 1px none white;
+    margin:15px auto ;
+}
+
+.prePage{
+    display: inline-block;
+    height: 90px;
+    font-size: 46px;
+    border-radius: 20px;
+    background-color: #57a3ef;
+}
+.nextPage{
+    height: 90px;
+    font-size: 46px;
+    border-radius: 20px;
+    margin-left: 50px;
+    background-color: #57a3ef;
+}
+
+.school-nav{
+    height: 80px;
+    width: 100%;
+    border: 1px solid #999999;
+}
+
+
+
+.li_h{
+    margin-top: 8px;
+    float: left ;
+    line-height:135px;
+    text-align: center;
+}
+
+.school_li{
+    height: 140px;
+    width: 98%;
+    border: 1px solid #E9E7E7;
+    margin-top: 15px;
+    margin-left: 10px;
+    border-radius: 20px;
+    background-color: #f7f7f7;
+}
+
+.li_1{
+    overflow:hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    width: 335px;
+    height: 120px;
+    margin-left: 20px;
+}
+.li_2{
+    width: 120px;
+    height: 120px;
+}
+
+.li_3{
+    width: 180px;
+    height: 120px;
+}
+
+.li_4{
+    width: 150px;
+    height: 120px;
+}
+.li_5{
+    overflow:hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    width: 130px;
+    height: 120px;
+}
+
+

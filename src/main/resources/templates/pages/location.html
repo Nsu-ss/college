@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>掌上高校</title>
+    <link rel="stylesheet" href="../../static/css/list/iconfont.css" th:href="@{/css/list/iconfont.css}">
+    <link rel="stylesheet" href="../../static/css/check.css" th:href="@{/css/check.css}">
+    <link rel="stylesheet" href="../../static/layer/mobile/need/layer.css" th:href="@{layer/mobile/need/layer.css}">
+    <script src="../../static/js/jquery-3.3.1.min.js" th:src="@{/js/jquery-3.3.1.min.js}"></script>
+    <script src="../../static/layer/mobile/layer.js" th:src="@{/layer/mobile/layer.js}"></script>
+    <script src="../../static/js/index.js" th:src="@{/js/index.js}"></script>
+    <script src="../../static/js/rollups/aes.js" th:src="@{/js/rollups/aes.js}"></script>
+</head>
+<body>
+<div class="nav">
+   <a href="/" class="back-list"><i class="icon iconfont icon-menu2"></i></a>
+    <span class="tr-list">掌上高校-<span id="title">根据次位选大学</span></span>
+</div>
+
+<div style="width: 100%;height: 220px ;border: 1px solid white ; margin-top: 40px; clear: left">
+        <div class="collages" ><a href="#"  class="checks" id="checks-2">根据次位选大学</a></div>
+</div>
+
+<div  style="width: 100%;height: 100px ;border: 1px solid white ; margin-top: 50px">
+   <span style="font-size:46px;margin-left: 60px;">学校省份:</span>
+    <select name="province" class="selects" >
+        <option value="北京市"  key="1" >北京</option>
+        <option value="天津市" key="2" >天津</option>
+        <option value="河北省"  key="3">河北</option>
+        <option value="山西省" key="4">山西</option>
+        <option value="内蒙古自治区" key="5" >内蒙古</option>
+        <option value="辽宁省" key="6">辽宁</option>
+        <option value="吉林省"  key="7">吉林</option>
+        <option value="黑龙江省" key="8" >黑龙江</option>
+        <option value="上海市" key="9" >上海</option>
+        <option value="江苏省" key="10" >江苏</option>
+        <option value="浙江省" key="11" >浙江</option>
+        <option value="安徽省" key="12" >安徽</option>
+        <option value="福建省" key="13">福建</option>
+        <option value="江西省" key="14" >江西</option>
+        <option value="山东省" key="15">山东</option>
+        <option value="河南省" key="16" >河南</option>
+        <option value="湖北省"  key="17">湖北</option>
+        <option value="湖南省"  key="18">湖南</option>
+        <option value="广东省" key="19" >广东</option>
+        <option value="广西壮族自治区"  key="20">广西</option>
+        <option value="海南省"  key="21">海南</option>
+        <option value="重庆省"  key="22">重庆</option>
+        <option value="四川省" key="23" selected>四川</option>
+        <option value="贵州省" key="24" >贵州</option>
+        <option value="云南省" key="25" >云南</option>
+        <option value="西藏省" key="26" >西藏</option>
+        <option value="陕西省" key="27" >陕西</option>
+        <option value="甘肃省"  key="28">甘肃</option>
+        <option value="青海省" key="29" >青海</option>
+        <option value="宁夏回族自治区" key="30">宁夏</option>
+        <option value="新疆维吾尔自治区" key="31">新疆</option>
+        <option value="西藏自治区" key="32">西藏</option>
+    </select>
+</div>
+
+<div style="width: 100%;height: 100px ;border: 1px solid white ; margin-top: 50px">
+   <span style="font-size:46px;margin-left: 150px;float: left;margin-top: 25px">科类:</span>
+    <div class="collage-type" ><a href="#" id="collage-a" class="collage-a collage-change" onclick="typeCheckClick(3)">理科</a></div>
+    <div class="collage-type" ><a href="#" id="collage-b" class="collage-a" onclick="typeCheckClick(4)">文科</a></div>
+</div>
+
+<div style="width: 100%;height: 100px ;border: 1px solid white ; margin-top: 50px">
+    <span class="scoreSpan">高考分数:</span>
+    <input id="scores"  type="text" class="score">
+</div>
+
+
+<div style="width: 100%;height: 100px ;border: 1px solid white ; margin-top: 50px">
+  <button class="collage-find" id="collage-find">找大学</button>
+</div>
+
+<script>
+
+    $(document).ready(function () {
+    });
+
+</script>
+
+
+</body>
+</html>

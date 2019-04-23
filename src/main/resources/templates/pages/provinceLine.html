@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>掌上高校</title>
+
+    <link rel="stylesheet" href="../../static/layer/layui/css/layui.css" th:href="@{/layer/layui/css/layui.css}">
+    <link rel="stylesheet" href="../../static/css/list/iconfont.css" th:href="@{/css/list/iconfont.css}">
+    <link rel="stylesheet" href="../../static/css/province.css" th:href="@{/css/province.css}">
+    <link rel="stylesheet" href="../../static/css/collegesByp.css" th:href="@{/css/collegesByp.css}">
+    <script src="../../static/js/index.js" th:src="@{/js/index.js}"></script>
+    <script src="../../static/js/rollups/aes.js" th:src="@{/js/rollups/aes.js}"></script>
+    <script src="../../static/js/jquery-3.3.1.min.js" th:src="@{/js/jquery-3.3.1.min.js}"></script>
+    <script src="../../static/layer/layui/layui.js" th:src="@{/layer/layui/layui.js}"></script>
+</head>
+<body>
+
+<div class="header">
+    <a href="/school/index" class="back-list"><i class="icon iconfont icon-menu2"></i></a>
+    <span class="tr-list">掌上高考-查各省分数线</span>
+</div>
+
+<div>
+    <div style="margin-top: 35px;float: left;">
+        <span style="margin: 15px;">省份</span>
+        <select id="province" class="shengFen">
+            <option  value="北京">北京</option>
+            <option  value="天津">天津</option>
+            <option  value="河北">河北</option>
+            <option  value="山西">山西</option>
+            <option  value="内蒙古">内蒙古</option>
+            <option  value="辽宁">辽宁</option>
+            <option  value="吉林">吉林</option>
+            <option  value="黑龙江">黑龙江</option>
+            <option  value="上海">上海</option>
+            <option  value="江苏">江苏</option>
+            <option  value="浙江">浙江</option>
+            <option  value="安徽">安徽</option>
+            <option  value="福建">福建</option>
+            <option  value="江西">江西</option>
+            <option  value="山东">山东</option>
+            <option  value="河南">河南</option>
+            <option  value="湖北">湖北</option>
+            <option  value="湖南">湖南</option>
+            <option  value="广东">广东</option>
+            <option  value="广西">广西</option>
+            <option  value="海南">海南</option>
+            <option  value="重庆">重庆</option>
+            <option  value="四川" selected>四川</option>
+            <option  value="贵州">贵州</option>
+            <option  value="云南">云南</option>
+            <option  value="西藏">西藏</option>
+            <option  value="陕西">陕西</option>
+            <option  value="甘肃">甘肃</option>
+            <option  value="青海">青海</option>
+            <option  value="宁夏">宁夏</option>
+            <option  value="新疆">新疆</option>
+            <option  value="香港">香港</option>
+            <option  value="澳门">澳门</option>
+            <option  value="台湾">台湾</option>
+        </select>
+    </div>
+
+    <div style="margin-top: 35px;float: left;">
+        <span style="margin: 15px;">年份</span>
+        <select id="year" class="keLei" >
+            <option>2018</option>
+            <option>2017</option>
+            <option>2016</option>
+            <option>2015</option>
+            <option>2014</option>
+            <option>2013</option>
+            <option>2012</option>
+        </select>
+
+    </div>
+</div>
+
+<ul style="margin-top: 160px;">
+    <li class="school-nav">
+        <div style="margin-left: 100px; float: left ;line-height: 80px">省份</div>
+        <div style="margin-left: 150px; float: left;line-height: 80px">类型</div>
+        <div style="margin-left: 150px; float: left;line-height: 80px">批次</div>
+        <div style="margin-left: 150px; float: left;line-height: 80px">分数线</div>
+    </li>
+    <ul id="ul">
+
+    </ul>
+
+</ul>
+
+
+<script>
+
+    lines= "";
+
+    layui.use('layer', function(){
+        var layer = layui.layer;
+    });
+
+    $(document).ready(function () {
+        getLine($("#province").val(),$("#year").val());
+    });
+
+    function getLine(provicne,year) {
+        $.ajax({
+            type: "get",
+            url:"/school/getLine",
+            data:{'province':provicne,'year':year},
+            dataType: "json",
+            success:function (result) {
+                if (result.code === 0){
+                    if (result.data.data.length > 0){
+                        lines = result.data.data;
+
+                        layui.use('laytpl', function () {
+                            layTpl = layui.laytpl;
+                            //模板
+                            var html = $("#lines").html();
+
+                            //数据显示
+                            var ul = $("#ul");
+                            layTpl(html).render(lines, function (vaule) {
+                                ul.html(vaule);
+                            });
+                        });
+                    }else {
+                        $("#ul").html("没有相关信息，请重新选择")
+                    }
+                }else {
+                    layer.msg("系统异常！")
+                    return false;
+                }
+
+            },
+            error:function () {
+                layer.msg("系统异常！");
+                return false;
+            }
+        })
+    }
+    $("#province,#year").click(function () {
+        getLine($("#province").val(),$("#year").val());
+    });
+
+</script>
+
+
+<script id="lines"  type="text/html">
+
+    {{#  layui.each(lines, function(index, item){ }}
+        <li class="school_li">
+            <div class="li_h li_a">{{item.district}}</div>
+            <div class="li_h li_a">{{item.type}}</div>
+            <div class="li_h li_a">{{item.batch}}</div>
+            <div class="li_h li_a">{{item.low}}</div>
+        </li>
+    {{#  }); }}
+</script>
+
+</body>
+</html>

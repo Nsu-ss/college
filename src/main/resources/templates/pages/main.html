@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>掌上高校</title>
+    <link rel="stylesheet" href="../../static/layer/layui/css/layui.css" th:href="@{/layer/layui/css/layui.css}">
+    <link rel="stylesheet" href="../../static/css/list/iconfont.css" th:href="@{/css/list/iconfont.css}">
+    <link rel="stylesheet" href="../../static/css/first.css" th:href="@{/css/first.css}">
+</head>
+
+<body>
+
+  <div class="header">
+      <a href="/school/index" class="back-list"><i class="icon iconfont icon-menu2"></i></a>
+          <span class="tr-list">掌上高考</span>
+  </div>
+
+  <div class="layui-carousel banner" id="test1">
+      <div carousel-item>
+          <div><img src="../../static/images/53.jpg" th:src="@{/images/53.jpg}" class="banner-img"></div>
+          <div><img src="../../static/images/57.jpg" th:src="@{/images/57.jpg}" class="banner-img"></div>
+          <div><img src="../../static/images/ezb.jpg" th:src="@{/images/ezb.jpg}" class="banner-img"></div>
+      </div>
+  </div>
+
+  <table class="content" >
+      <tr  >
+          <td class="first" style="border-left: none">
+              <a href="/school/score" id="findCollegeByScore">
+              <img src="../../static/images/big-icon1.png" th:src="@{/images/big-icon1.png}"/>
+              <div class="name">根据分数选大学</div>
+              </a>
+          </td>
+          <td class="first" style="border-left: none">
+              <a href="/school/position">
+                  <img src="../../static/images/big-icon2.png" th:src="@{/images/big-icon2.png}" />
+                  <div class="name" >根据地域选大学</div>
+              </a>
+          </td>
+          <td class="first" style="border-left: none">
+              <a href="/school/college">
+                  <img src="../../static/images/big-icon3.png" th:src="@{/images/big-icon3.png}"/>
+                  <div class="name" >查国内大学</div>
+              </a>
+          </td>
+      </tr>
+
+      <tr  >
+          <td class="first" style="border-left: none">
+              <a href="/school/Course">
+                  <img src="../../static/images/big-icon4.png" th:src="@{/images/big-icon4.png}"/>
+                  <div class="name" >查专业</div>
+              </a>
+          <td class="first">
+              <a href="/school/getProvinceLine">
+              <img src="../../static/images/big-icon7.png" th:src="@{/images/big-icon7.png}"/>
+              <div class="name" >查看各省分数线</div>
+              </a>
+          </td>
+          <td class="first" style="border-right: none">
+              <a href="#">
+                  <img src="../../static/images/big-icon8.png" th:src="@{/images/big-icon8.png}"/>
+                  <div class="name" >招生计划</div>
+              </a>
+          </td>
+      </tr>
+
+  </table>
+
+  <div class="foot">
+      <div></div>
+      <div></div>
+      <div></div>
+  </div>
+
+  <script src="../../static/js/rollups/aes.js" th:src="@{/js/rollups/aes.js}"></script>
+  <script src="../../static/js/index.js" th:src="@{/js/index.js}"></script>
+  <script src="../../static/js/jquery-3.3.1.min.js" th:src="@{/js/jquery-3.3.1.min.js}"></script>
+  <script src="../../static/layer/layui/layui.js" th:src="@{/layer/layui/layui.js}"></script>
+
+<script>
+    layui.use('carousel', function(){
+        var carousel = layui.carousel;
+        //建造实例
+        carousel.render({
+            elem: '#test1'
+            ,width: '100%'
+            ,height:'350px'//设置容器宽度
+            ,arrow: 'always' //始终显示箭头
+            ,anim: 'default' //切换动画方式
+        });
+
+    });
+
+</script>
+
+
+</body>
+</html>

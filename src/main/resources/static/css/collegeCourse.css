@@ -1,0 +1,32 @@
+*{
+    padding: 0px;
+    margin: 0px;
+    font-size: 46px;
+}
+.header{
+    height: 120px;
+    width: 100%;
+    border: 1px solid white;
+    background-color: #57a3ef;
+    color: white;
+}
+.tr-list {
+    display: block;
+    margin-left: 300px;
+    line-height: 120px;
+    font-size: 46px;
+}
+
+.search{
+    height: 100px;
+    width: 90%;
+    border: 1px solid black;
+    margin: 50px 30px 0px 50px;
+}
+
+.search-i{
+    font-size: 88px;
+    color: #57a3ef;
+    position: absolute;
+    margin: 50px 0px 0px -150px;
+}

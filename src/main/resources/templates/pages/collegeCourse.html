@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>掌上高校</title>
+
+    <link rel="stylesheet" href="../../static/layer/layui/css/layui.css" th:href="@{/layer/layui/css/layui.css}">
+    <link rel="stylesheet" href="../../static/css/list/iconfont.css" th:href="@{/css/list/iconfont.css}">
+    <link rel="stylesheet" href="../../static/css/collegeCourse.css" th:href="@{/css/collegeCourse.css}">
+    <script src="../../static/js/index.js" th:src="@{/js/index.js}"></script>
+    <script src="../../static/js/rollups/aes.js" th:src="@{/js/rollups/aes.js}"></script>
+    <script src="../../static/js/jquery-3.3.1.min.js" th:src="@{/js/jquery-3.3.1.min.js}"></script>
+    <script src="../../static/layer/layui/layui.js" th:src="@{/layer/layui/layui.js}"></script>
+    <script src="../../static/layer/mobile/layer.js" th:src="@{/layer/mobile/layer.js}"></script>
+</head>
+<body>
+
+<div class="header">
+    <a href="/school/index" class="back-list"><i class="icon iconfont icon-menu2"></i></a>
+    <span class="tr-list">掌上高考-<span id="title">查专业</span></span>
+</div>
+
+<div >
+    <input type="text" class="search" id="search" placeholder="搜索你感兴趣的专业" >
+    <i class="layui-icon layui-icon-search search-i" id="search-btn"></i>
+</div>
+
+<div class="courses">
+    <div>
+
+
+    </div>
+
+
+</div>
+
+<script>
+
+
+
+    $("#search-btn").click(function () {
+        var  search = $("#search");
+        if ($.trim(search.val())== "" || search == null){
+            layer.open({
+                content: '请输入(正确的)专业名称',
+                skin: 'msg',
+                time: 1
+            });
+        }
+        $.ajax({
+            type:"get",
+            url:"college/findCourseByName",
+            dataType:"json",
+            data:{"mName":MyEncrypt((search.val())).toString()},
+            success:function (result) {
+                var results  = MyDecrypt(result.resultMap.data.AesResult);
+                var data = JSON.parse(results);
+                console.info(data);
+            }
+
+
+        })
+    })
+
+
+
+</script>
+
+</body>
+</html>
